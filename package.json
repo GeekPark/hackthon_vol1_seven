@@ -14,5 +14,20 @@
     "jade": "^1.11.0",
     "socket.io": "^1.5.1",
     "socket.io-client": "^1.5.1"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GeekPark/hackthon_vol1_seven.git"
+  },
+  "keywords": [
+    "hackthon",
+    "geekpark",
+    "game",
+    "websocket"
+  ],
+  "bugs": {
+    "url": "https://github.com/GeekPark/hackthon_vol1_seven/issues"
+  },
+  "homepage": "https://github.com/GeekPark/hackthon_vol1_seven#readme"
 }
