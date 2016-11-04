@@ -1,16 +1,13 @@
 extends _layout
 
 block style
-    style.
-        body {
-            text-align: center;
-        }
+    link(href='/home.css',rel='stylesheet')
 
 block content
     h1 Welcome
     p
-        a(href="/screen") Screen
+        a(href='/screen') Screen
     p
-        a(href="/player") Player
+        a(href='/player') Player
 
 block script

@@ -1,0 +1,8 @@
+body {
+    text-align: center;
+}
+#switch {
+    font-size: 40px;
+    margin: 10px auto;
+    padding: 30px;
+}

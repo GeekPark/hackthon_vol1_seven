@@ -1,0 +1,34 @@
+body {
+    text-align: center;
+}
+ul, li {
+    list-style: none;
+}
+#playground {
+    margin: 30px auto;
+    padding: 0;
+}
+#info {
+    clear: both;
+    padding: 20px;
+}
+.box {
+    background-color: #eee;
+    border: 3px solid;
+    width: 70px;
+    height: 70px;
+    float: left;
+    margin: 2px;
+}
+.base_on {
+    border-color: blue;
+}
+.base_off {
+    border-color: red;
+}
+.on {
+    background-color: #33c;
+}
+.off {
+    background-color: #c33;
+}
