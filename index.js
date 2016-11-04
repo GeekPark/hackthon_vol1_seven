@@ -22,5 +22,5 @@ app.use('/', require('./routers/game'));
 
 server.listen(port, () => {
     console.log(`SocketGame ON ${port}`);
-    sock.init(server);
+    sock(server);
 });
