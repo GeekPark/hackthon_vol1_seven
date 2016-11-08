@@ -1,12 +1,7 @@
 let socks = {};
 let screens = [];
 let players = [];
-const config = {row: 3, col: 3};
-const points = [
-    0,1,0,
-    1,0,1,
-    0,1,0
-];
+const game = require('../config/game.json');
 
 let syncScreenData = function(msg, data) {
     for (screen of screens) {
@@ -22,8 +17,8 @@ let syncPlayerData = function(msg, data) {
 
 module.exports = server => {
     let sio = require('socket.io')(server);
-    let indexList = [...points].map((item, index) => index);
-    let checkList = [...points].map(() => -1);
+    let indexList = [...game.points].map((item, index) => index);
+    let checkList = [...game.points].map(() => -1);
 
     function getIndex() {
         var ind = Math.floor(Math.random() * indexList.length);
@@ -33,8 +28,8 @@ module.exports = server => {
     }
 
     function checkOver() {
-        for (var i = 0, l = points.length; i < l; i++) {
-            if (checkList[i] !== points[i]) {
+        for (var i = 0, l = game.points.length; i < l; i++) {
+            if (checkList[i] !== game.points[i]) {
                 return false;
             }
         }
@@ -77,13 +72,13 @@ module.exports = server => {
             console.log('-- screen in', sock.id);
             socks[sock.id].type = 'screen';
             screens.push(sock);
-            sock.emit('map', { config, points });
+            sock.emit('map', game);
             syncScreenData('players', {
                 playerCount: players.length
             });
         });
         sock.on('iamplayer', data => {
-            if (players.length < points.length) {
+            if (players.length < game.points.length) {
                 console.log('-- player in', sock.id);
                 socks[sock.id].type = 'player';
                 socks[sock.id].index = getIndex();
