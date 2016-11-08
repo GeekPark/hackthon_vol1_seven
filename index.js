@@ -6,7 +6,7 @@ server = require('http').createServer(app),
 port = 9999;
 
 app.set('views', path.join(__dirname, './views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 
 app.use(express.static('static', {
     index: false,
