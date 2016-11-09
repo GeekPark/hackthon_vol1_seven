@@ -58,6 +58,10 @@ module.exports = server => {
                     let index = players.indexOf(sock);
                     indexList.push(target.index);
                     players.splice(index, 1);
+                    checkList[target.index] = -1;
+                    syncScreenData('resetPoint', {
+                        index: target.index
+                    });
                     syncScreenData('players', {
                         playerCount: players.length
                     });
@@ -72,7 +76,11 @@ module.exports = server => {
             console.log('-- screen in', sock.id);
             socks[sock.id].type = 'screen';
             screens.push(sock);
-            sock.emit('map', game);
+            sock.emit('map', {
+                config: game.config,
+                points: game.points,
+                checkList
+            });
             syncScreenData('players', {
                 playerCount: players.length
             });

@@ -16,20 +16,28 @@
         playerCount = data.config.row * data.config.col;
         playground.css('width', data.config.col * 80);
         for(let i = 0, clas = ['box'], l = data.points.length; i < l; i++, clas = ['box']) {
-            if(data.points[i] === 0) {
+            if (data.points[i] === 0) {
                 clas.push('base_off');
             } else {
                 clas.push('base_on');
             }
+            if (data.checkList[i] === 0) {
+                clas.push('off');
+            } else if (data.checkList[i] === 1) {
+                clas.push('on');
+            }
             playground.append(`<li id="box${i}" class="${clas.join(' ')}"></li>`);
         }
     });
+    sock.on('resetPoint', data => {
+        $(`#box${data.index}`).removeClass('on off');
+    })
     sock.on('players', data => {
         console.log('players', data);
         infoBox.html(`${data.playerCount} / ${playerCount}`);
     });
     sock.on('switch', data => {
-        if(state === 'over') {
+        if (state === 'over') {
             console.log('Game Over.');
         } else {
             console.log('switch', data);
