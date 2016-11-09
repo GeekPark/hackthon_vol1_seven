@@ -21,13 +21,13 @@ ul, li {
     margin: 2px;
 }
 .base_on {
-    border-color: blue;
+    border-color: black;
 }
 .base_off {
     border-color: red;
 }
 .on {
-    background-color: #33c;
+    background-color: #333;
 }
 .off {
     background-color: #c33;
