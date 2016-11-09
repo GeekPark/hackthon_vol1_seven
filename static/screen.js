@@ -1,6 +1,7 @@
 (function() {
     let sock = io(),
         state = 'open',
+        playerCount = 0,
         playground = $('#playground'),
         infoBox = $('#info');
     sock.on('connect', () => {
@@ -12,6 +13,7 @@
         playground.html('');
         infoBox.html('');
         state = 'open';
+        playerCount = data.config.row * data.config.col;
         playground.css('width', data.config.col * 80);
         for(let i = 0, clas = ['box'], l = data.points.length; i < l; i++, clas = ['box']) {
             if(data.points[i] === 0) {
@@ -24,6 +26,7 @@
     });
     sock.on('players', data => {
         console.log('players', data);
+        infoBox.html(`${data.playerCount} / ${playerCount}`);
     });
     sock.on('switch', data => {
         if(state === 'over') {
