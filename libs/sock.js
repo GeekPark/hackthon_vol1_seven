@@ -1,6 +1,6 @@
 let socks = {};
 let screens = [];
-let players = [];
+let playerCount = 0;
 const game = require('../config/game.json');
 
 let syncScreenData = function(msg, data) {
@@ -10,8 +10,16 @@ let syncScreenData = function(msg, data) {
 }
 
 let syncPlayerData = function(msg, data) {
-    for (player of players) {
-        player.emit(msg, data);
+    for (id in socks) {
+        if (socks[id].type !== 'screen') {
+            socks[id].sock.emit(msg, data);
+        }
+    }
+}
+
+let syncAllData = function(msg, data) {
+    for (id in socks) {
+        socks[id].sock.emit(msg, data);
     }
 }
 
@@ -55,16 +63,12 @@ module.exports = server => {
                     break;
                 }
                 case 'player': {
-                    let index = players.indexOf(sock);
+                    playerCount--;
                     indexList.push(target.index);
-                    players.splice(index, 1);
                     checkList[target.index] = -1;
-                    syncScreenData('resetPoint', {
-                        index: target.index
-                    });
-                    syncScreenData('players', {
-                        playerCount: players.length
-                    });
+                    syncScreenData('map', Object.assign(game, {checkList}));
+                    syncScreenData('players', { playerCount });
+                    syncPlayerData('recheckin');
                     break;
                 }
                 default:
@@ -76,27 +80,17 @@ module.exports = server => {
             console.log('-- screen in', sock.id);
             socks[sock.id].type = 'screen';
             screens.push(sock);
-            sock.emit('map', {
-                config: game.config,
-                points: game.points,
-                checkList
-            });
-            syncScreenData('players', {
-                playerCount: players.length
-            });
+            sock.emit('map', Object.assign(game, {checkList}));
+            syncScreenData('players', { playerCount });
         });
         sock.on('iamplayer', data => {
-            if (players.length < game.points.length) {
+            if (playerCount < game.points.length) {
                 console.log('-- player in', sock.id);
+                playerCount++;
                 socks[sock.id].type = 'player';
                 socks[sock.id].index = getIndex();
-                players.push(sock);
-                sock.emit('msg', {
-                    code: 0
-                })
-                syncScreenData('players', {
-                    playerCount: players.length
-                });
+                syncScreenData('players', { playerCount });
+                sock.emit('msg', { code: 0 })
             } else {
                 console.log('-- guest in', sock.id);
                 socks[sock.id].type = 'guest';
@@ -115,8 +109,7 @@ module.exports = server => {
                 value: data.value
             });
             if (checkOver()) {
-                syncScreenData('over');
-                syncPlayerData('over');
+                syncAllData('over');
             }
         })
     });

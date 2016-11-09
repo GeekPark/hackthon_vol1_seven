@@ -1,5 +1,6 @@
 body {
     text-align: center;
+    font-family: monospace;
 }
 ul, li {
     list-style: none;
@@ -8,9 +9,10 @@ ul, li {
     margin: 30px auto;
     padding: 0;
 }
-#info {
+#info, #msg {
     clear: both;
-    padding: 20px;
+    padding: 20px 0;
+    font-size: 20px;
 }
 .box {
     background-color: #eee;
